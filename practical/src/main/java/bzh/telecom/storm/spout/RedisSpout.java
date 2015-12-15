@@ -29,6 +29,7 @@ public class RedisSpout extends JedisPubSub implements IRichSpout{
     private void initializeRedisConnection() {
         jedisPool = new JedisPool(new JedisPoolConfig(), redisUrl);
         Jedis jedis = jedisPool.getResource();
+        jedis.subscribe(this, "feed");
         jedisPool.returnResource(jedis);
     }
     
