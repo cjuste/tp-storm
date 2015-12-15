@@ -33,7 +33,7 @@ public class ImportData {
 
     @Scheduled(initialDelay = 0, fixedRate = 1000)
     public void getData() {
-        DateTime now = DateTime.now(DateTimeZone.forID("Europe/Paris")).minusMinutes(5);
+        DateTime now = DateTime.now(DateTimeZone.forID("Europe/Paris")).minusMonths(1);
         for (int feed : feedIds) {
             try {
                 HttpResponse<String> response = Unirest.get(feedUrl).routeParam("id", Integer.toString(feed)).routeParam("start", Long.toString(now
@@ -43,10 +43,10 @@ public class ImportData {
                     String bodyWithoutHook = responseBody.substring(2, responseBody.length()-2);
                     String[] values = bodyWithoutHook.split("\\,");
                     long ts = Long.parseLong(values[0]);
-                    String value = values[1].substring(1, values[1].length()-1);
+                    Integer value = Integer.parseInt(values[1].substring(1, values[1].length() - 1));
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("id", feed);
-                    jsonObject.put("ts", ts);
+                    jsonObject.put("ts", new DateTime(ts, DateTimeZone.UTC).plusMonths(1).toString());
                     jsonObject.put("value", value);
                     redisService.publishEvent("feed", jsonObject.toString());
                 }
