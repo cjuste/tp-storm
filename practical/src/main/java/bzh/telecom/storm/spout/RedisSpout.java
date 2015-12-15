@@ -16,7 +16,8 @@ import java.util.Map;
  */
 public class RedisSpout extends JedisPubSub implements IRichSpout{
 
-    private String redisUrl;
+	private static final long serialVersionUID = -7939372277566290828L;
+	private String redisUrl;
     private JedisPool jedisPool;
     private SpoutOutputCollector outputCollector;
 
@@ -28,56 +29,38 @@ public class RedisSpout extends JedisPubSub implements IRichSpout{
     private void initializeRedisConnection() {
         jedisPool = new JedisPool(new JedisPoolConfig(), redisUrl);
         Jedis jedis = jedisPool.getResource();
-        jedis.subscribe(this, "feed");
         jedisPool.returnResource(jedis);
     }
+    
+    public void open(Map arg0, TopologyContext arg1, SpoutOutputCollector spoutOutputCollector) {
+		// TODO Auto-generated method stub
+		this.outputCollector = spoutOutputCollector;
+	}
 
-    @Override
-    public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
+	public void declareOutputFields(OutputFieldsDeclarer arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    }
-
-    @Override
-    public void open(Map map, TopologyContext topologyContext, SpoutOutputCollector spoutOutputCollector) {
-        this.outputCollector = spoutOutputCollector;
-    }
-
-    @Override
     public void nextTuple() {
-    }
-
-
+		// TODO Auto-generated method stub
+		
+	}
+    
 
     @Override
     public void onMessage(String channel, String message) {
         //Called whenever a new message arrives in the Redis channel.
     }
 
-
-
-
-
-    //Don't worry about what's after this line
-    @Override
-    public Map<String, Object> getComponentConfiguration() {
-        return null;
-    }
-
-    @Override
     public void close() {
-        jedisPool.close();
-    }
+		if (jedisPool != null) {
+			jedisPool.close();
+		}
+	}
 
-    @Override
-    public void ack(Object o) {
 
-    }
-
-    @Override
-    public void fail(Object o) {
-
-    }
-
+    //You won't need any of the next methods
     @Override
     public void onPMessage(String pattern, String channel, String message) {
 
@@ -102,13 +85,29 @@ public class RedisSpout extends JedisPubSub implements IRichSpout{
     public void onPSubscribe(String pattern, int subscribedChannels) {
 
     }
-    @Override
-    public void activate() {
 
-    }
+	public void ack(Object arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    @Override
-    public void deactivate() {
+	public void activate() {
+		// TODO Auto-generated method stub
+		
+	}
 
-    }
+	public void deactivate() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void fail(Object arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Map<String, Object> getComponentConfiguration() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

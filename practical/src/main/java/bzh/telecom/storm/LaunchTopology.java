@@ -9,8 +9,6 @@ import backtype.storm.topology.TopologyBuilder;
  */
 public class LaunchTopology {
 
-    private static final String SPOUT = "first_spout";
-    private static final String FIRST_BOLT = "first_bolt";
 
     public static void main(String[] args) {
 
@@ -18,6 +16,7 @@ public class LaunchTopology {
 
 
         //Define your topology here
+
 
         Config conf = new Config();
 
